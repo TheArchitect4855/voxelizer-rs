@@ -2,7 +2,7 @@ extern crate cty;
 
 #[repr(C)]
 pub struct vx_vertex {
-	pub v: [f32;3]
+	pub v: [cty::c_float;3]
 }
 
 #[repr(C)]
@@ -27,6 +27,7 @@ pub struct vx_mesh {
 	pub indices: *mut cty::c_uint,
 	pub normalindices: *mut cty::c_uint,
 	pub nindices: cty::size_t,
+	pub nvertices: cty::size_t,
 	pub nnormals: cty::size_t
 }
 
