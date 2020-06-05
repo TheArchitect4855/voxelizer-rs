@@ -1,4 +1,4 @@
-extern crate libc;
+use libc;
 
 #[repr(C)]
 pub struct vx_vertex {

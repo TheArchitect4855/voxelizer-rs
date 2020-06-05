@@ -1,3 +1,5 @@
+extern crate libc;
+
 mod bindings;
 use bindings::*;
 
@@ -55,6 +57,8 @@ impl Mesh {
 			let t = unsafe { *texture.offset(i as isize) };
 			tex.push(t);
 		}
+
+		unsafe { libc::free(texture as *mut libc::c_void); }
 		tex
 	}
 	
