@@ -37,7 +37,6 @@ impl Mesh {
 		let mesh = self.allocate();
 		unsafe {
 			let pointcloud = vx_voxelize_pc(mesh, voxel_size.x, voxel_size.y, voxel_size.z, precision);
-			vx_mesh_free(mesh);
 			PointCloud::from_vx(pointcloud)
 		}
 	}
@@ -46,7 +45,6 @@ impl Mesh {
 		let mesh = self.allocate();
 		let mesh = unsafe { 
 			let voxelized = vx_voxelize(mesh, voxel_size.x, voxel_size.y, voxel_size.z, precision);
-			vx_mesh_free(mesh);
 			voxelized
 		};
 		Mesh::from_vx(mesh)
@@ -56,7 +54,6 @@ impl Mesh {
 		let mesh = self.allocate();
 		let texture = unsafe { 
 			let voxelized = vx_voxelize_snap_3dgrid(mesh, width, height, depth);
-			vx_mesh_free(mesh);
 			voxelized
 		};
 		
@@ -148,8 +145,6 @@ impl Mesh {
 				let ind = (*mesh).indices.offset(i as isize);
 				indices.push(*ind);
 			}
-			
-			vx_mesh_free(mesh);
 		}
 		
 		Mesh::new(vertices, colours, normals, indices)
@@ -186,8 +181,6 @@ impl PointCloud {
 				let c = (*pointcloud).colors.offset(i as isize);
 				colours.push(Colour::new((*c).r, (*c).g, (*c).b));
 			}
-			
-			vx_point_cloud_free(pointcloud);
 		}
 		
 		PointCloud { vertices, colours }

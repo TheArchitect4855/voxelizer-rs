@@ -38,6 +38,22 @@ pub struct vx_point_cloud {
 	pub nvertices: cty::size_t
 }
 
+impl Drop for vx_mesh {
+	fn drop(&mut self) {
+		unsafe {
+			vx_mesh_free(self);
+		}
+	}
+}
+
+impl Drop for vx_point_cloud {
+	fn drop(&mut self) {
+		unsafe {
+			vx_point_cloud_free(self);
+		}
+	}
+}
+
 extern "C" {
 	pub fn vx_voxelize_pc(mesh: *const vx_mesh, 
 		voxelsizex: cty::c_float,
