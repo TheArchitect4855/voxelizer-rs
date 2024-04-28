@@ -36,15 +36,19 @@ pub struct PointCloud {
 
 impl Mesh {
 	pub fn voxelize_pointcloud(&self, voxel_size: Vector3, precision: f32) -> PointCloud {
-		let mesh = self.allocate();
-		let pointcloud = unsafe { vx_voxelize_pc(mesh, voxel_size.x, voxel_size.y, voxel_size.z, precision) };
-		PointCloud::from_vx(pointcloud)
+		let vx_mesh = self.allocate();
+		let vx_pointcloud = unsafe { vx_voxelize_pc(vx_mesh, voxel_size.x, voxel_size.y, voxel_size.z, precision) };
+		let pointcloud = PointCloud::from_vx(vx_pointcloud);
+		unsafe { vx_point_cloud_free(vx_pointcloud) };
+		pointcloud
 	}
 	
 	pub fn voxelize(&self, voxel_size: Vector3, precision: f32) -> Mesh {
-		let mesh = self.allocate();
-		let mesh = unsafe { vx_voxelize(mesh, voxel_size.x, voxel_size.y, voxel_size.z, precision) };
-		Mesh::from_vx(mesh)
+		let vx_mesh = self.allocate();
+		let vx_mesh = unsafe { vx_voxelize(vx_mesh, voxel_size.x, voxel_size.y, voxel_size.z, precision) };
+		let mesh = Mesh::from_vx(vx_mesh);
+		unsafe { vx_mesh_free(vx_mesh) };
+		mesh
 	}
 	
 	pub fn voxelize_texture(&self, width: u32, height: u32, depth: u32) -> Vec<u32> {
